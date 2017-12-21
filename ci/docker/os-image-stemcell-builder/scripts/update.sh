@@ -44,7 +44,7 @@ apt-get -y install git
 apt-get -y install build-essential
 
 # ensure the correct kernel headers are installed
-apt-get -y install linux-headers-$(uname -r)
+#apt-get -y install linux-headers-$(uname -r)
 
 
 
@@ -61,10 +61,10 @@ apt-get -y install g++ git-core make
 apt-get -y install libmysqlclient-dev libpq-dev libsqlite3-dev libxml2-dev libxslt-dev
 
 # vSphere requirements
-apt-get -y install open-vm-dkms
+#apt-get -y install open-vm-dkms
 
 # OpenStack requirement
-apt-get -y install qemu-utils
+#apt-get -y install qemu-utils
 
 # CentOS building requirements
 apt-get -y install yum
