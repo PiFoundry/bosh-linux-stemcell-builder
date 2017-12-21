@@ -1,6 +1,6 @@
 # bosh/os-image-stemcell-builder
 
-FROM bosh/main-ruby-go
+FROM ruurdk/main-ruby-go
 
 RUN groupadd -g 1000 ubuntu && useradd -u 1000 -g 1000 -m ubuntu && echo 'ubuntu ALL=NOPASSWD:ALL' >> /etc/sudoers
 
