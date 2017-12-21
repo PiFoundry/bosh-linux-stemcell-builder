@@ -44,6 +44,7 @@ apt-get -y update --fix-missing
 #apt-get -y install build-essential
 
 # ensure the correct kernel headers are installed
+apt-get -y install raspberrypi-kernel-headers
 #apt-get -y install linux-headers-$(uname -r)
 
 
