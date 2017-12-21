@@ -33,15 +33,15 @@ apt-get update
 apt-get -y upgrade; apt-get clean
 
 DEBIAN_FRONTEND=noninteractive apt-get -y  -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-apt-get -y install curl
+#apt-get -y install curl
 
 # sometimes the cached lists seem to get out of date around here
 # http://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error/160179
 rm -rf /var/lib/apt/lists/*
 
 apt-get -y update --fix-missing
-apt-get -y install git
-apt-get -y install build-essential
+#apt-get -y install git
+#apt-get -y install build-essential
 
 # ensure the correct kernel headers are installed
 #apt-get -y install linux-headers-$(uname -r)
