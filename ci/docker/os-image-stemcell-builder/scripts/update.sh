@@ -33,31 +33,27 @@ apt-get update
 apt-get -y upgrade; apt-get clean
 
 DEBIAN_FRONTEND=noninteractive apt-get -y  -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
-#apt-get -y install curl
+apt-get -y install curl git build-essential bc
 
 # sometimes the cached lists seem to get out of date around here
 # http://askubuntu.com/questions/41605/trouble-downloading-packages-list-due-to-a-hash-sum-mismatch-error/160179
 rm -rf /var/lib/apt/lists/*
-
 apt-get -y update --fix-missing
-#apt-get -y install git
-#apt-get -y install build-essential
 
 # ensure the correct kernel headers are installed
-apt-get install -y bc
-wget http://phil.lavin.me.uk/downloads/linux-headers-rpi/linux-headers-4.9.59-v7%2B_4.9.59-v7%2B-2_armhf.deb
-dpkg -i /linux-headers-4.9.59-v7+_4.9.59-v7+-2_armhf.deb
-
 #apt-get -y install raspberrypi-kernel-headers # this won't work on non-raspbian
 #apt-get -y install linux-headers-$(uname -r)
-
-
+wget http://phil.lavin.me.uk/downloads/linux-headers-rpi/linux-headers-4.9.59-v7%2B_4.9.59-v7%2B-2_armhf.deb
+dpkg -i /linux-headers-4.9.59-v7+_4.9.59-v7+-2_armhf.deb
 
 # stemcell image creation
 apt-get -y install debootstrap kpartx
 
 # stemcell uploading
-apt-get -y install s3cmd
+#apt-get -y install s3cmd
+#echo "deb http://ftp.debian.org/debian experimental main" > /etc/apt/sources.list.d/debian.list
+#todo: add key from keyserver, update, and install
+#apt-get -y install -t experimental s3cmd
 
 # native gem compilation
 apt-get -y install g++ git-core make
@@ -72,7 +68,7 @@ apt-get -y install libmysqlclient-dev libpq-dev libsqlite3-dev libxml2-dev libxs
 #apt-get -y install qemu-utils
 
 # CentOS building requirements
-apt-get -y install yum
+#apt-get -y install yum
 
 # needed by stemcell building
 apt-get -y install parted
