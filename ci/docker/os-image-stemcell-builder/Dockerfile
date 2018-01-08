@@ -18,9 +18,10 @@ RUN /tmp/update.sh && rm /tmp/update.sh
 #  && echo "81a592eaf647358563f296aced845ac60d9061a45b30b852d1c3f3674720fe19  /usr/bin/meta4" | shasum -a 256 -c \
 #  && chmod +x /usr/bin/meta4
 RUN go get github.com/dpb587/metalink \
-    && cd go/src/github.com/dpb587/metalink/ \
+    && cd /root/go/src/github.com/dpb587/metalink/ \
     && go build -o /usr/bin/meta4 \
-    && chmod +x /usr/bin/meta4
+    && chmod +x /usr/bin/meta4 \
+    && rm -rf /root/go
 
 # this is unshare from ubuntu 15.10 so we can use the newer -fp flags
 ADD scripts/unshare /usr/bin/unshare
