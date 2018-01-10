@@ -77,3 +77,11 @@ function is_ppc64le() {
     return 1
   fi
 }
+
+function is_armhf() {
+  if [ `uname -m` == "armv7l" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
