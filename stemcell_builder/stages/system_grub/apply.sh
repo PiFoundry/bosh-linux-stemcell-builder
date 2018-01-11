@@ -7,12 +7,6 @@ set -e
 base_dir=$(readlink -nf $(dirname $0)/../..)
 source $base_dir/lib/prelude_apply.bash
 
-# Exit when on arm, raspberry doens't need a bootloader. It's built in.
-if is_armhf; then
-  echo "Skip grub installation for arm."
-  exit 0
-fi
-
 # Install grub or grub2
 if [ $(get_os_type) == "opensuse" ] ; then
   preferred=grub2
