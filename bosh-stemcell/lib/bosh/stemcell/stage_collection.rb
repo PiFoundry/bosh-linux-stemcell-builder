@@ -61,6 +61,8 @@ module Bosh::Stemcell
         azure_stages
       when Infrastructure::Softlayer then
         softlayer_stages
+      when Infrastructure::Bakery then
+        bakery_stages
       end
 
       stages.concat(finish_stemcell_stages)
@@ -127,6 +129,19 @@ module Bosh::Stemcell
       ]
     end
 
+    def bakery_stages
+      [
+        :system_network,        
+        :system_parameters,
+        :bosh_clean,
+        :bosh_harden,
+        :bosh_enable_password_authentication,
+        :bosh_clean_ssh,
+        :image_create,
+        :image_install_grub,
+      ]
+    end
+          
     def aws_stages
       [
         :system_network,
