@@ -23,7 +23,7 @@ RUN go get github.com/dpb587/metalink \
     && chmod +x /usr/bin/meta4 \
     && rm -rf /root/go
 
-# this is unshare from ubuntu 15.10 so we can use the newer -fp flags
+# this is unshare from raspbian stretch so we can use the newer -fp flags
 ADD scripts/unshare /usr/bin/unshare
 
 ADD scripts/ubuntu_bashrc /home/ubuntu/.bashrc
