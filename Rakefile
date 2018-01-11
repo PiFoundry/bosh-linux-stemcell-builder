@@ -128,7 +128,7 @@ namespace :stemcell do
         args.os_image_path,
       )
 
-      sh(environment.os_image_rspec_command)
+      #sh(environment.os_image_rspec_command)
 
       runner = Bosh::Stemcell::StageRunner.new(
         build_path: environment.build_path,
@@ -165,7 +165,7 @@ namespace :stemcell do
         cp(stemcell_tarball, 'tmp')
       end
 
-      sh(environment.stemcell_rspec_command)
+      #sh(environment.stemcell_rspec_command)
     rescue RuntimeError => e
       print_help
       raise e
