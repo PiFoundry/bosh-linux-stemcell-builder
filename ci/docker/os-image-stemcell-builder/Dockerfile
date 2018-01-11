@@ -13,15 +13,24 @@ RUN /tmp/update.sh && rm /tmp/update.sh
 #ADD scripts/install-ovf.sh /tmp/install-ovf.sh
 #RUN /tmp/install-ovf.sh && rm /tmp/install-ovf.sh
 
-#TODO build from source
-#RUN wget -O /usr/bin/meta4 https://github.com/dpb587/metalink/releases/download/v0.2.0/meta4-0.2.0-linux-amd64 \
-#  && echo "81a592eaf647358563f296aced845ac60d9061a45b30b852d1c3f3674720fe19  /usr/bin/meta4" | shasum -a 256 -c \
-#  && chmod +x /usr/bin/meta4
 RUN go get github.com/dpb587/metalink \
     && cd /root/go/src/github.com/dpb587/metalink/ \
     && go build -o /usr/bin/meta4 \
     && chmod +x /usr/bin/meta4 \
     && rm -rf /root/go
+
+# add bsdtar because of a bug with tar in docker + overlayfs: https://github.com/coreos/bugs/issues/1095#issuecomment-292664145
+RUN apt-get install -y m4 libtool autoconf \
+    && wget https://www.libarchive.org/downloads/libarchive-3.3.1.tar.gz \
+    && tar xzf libarchive-3.3.1.tar.gz \
+    && cd libarchive-3.3.1 \
+    && ./build/autogen.sh \
+    && ./configure \
+    && make \
+    && make install
+    && cp $(which tar) $(which tar)~ \
+    && ln -sf $(which bsdtar) $(which tar)
+# this can be restored with: RUN mv $(which tar)~ $(which tar)
 
 # this is unshare from raspbian stretch so we can use the newer -fp flags
 ADD scripts/unshare /usr/bin/unshare
