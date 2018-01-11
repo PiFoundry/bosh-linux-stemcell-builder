@@ -15,7 +15,7 @@ chown root:root $chroot/etc/shadow
 # only for CentOS
 chmod 0755 $chroot/lib
 # armhf has no 64 bit (for now)
-if ! is_armhf; then
+if [ -f $chroot/lib64]; then
   chmod 0755 $chroot/lib64
 fi
 
