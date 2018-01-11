@@ -15,5 +15,6 @@ module Bosh::Stemcell
 
     def self.armhf?
       arch == 'armv7l'
+    end
   end
 end
