@@ -14,7 +14,10 @@ chown root:root $chroot/etc/shadow
 
 # only for CentOS
 chmod 0755 $chroot/lib
-chmod 0755 $chroot/lib64
+# armhf has no 64 bit (for now)
+if ! is_armhf; then
+  chmod 0755 $chroot/lib64
+fi
 
 # remove setuid binaries - except su/sudo (sudoedit is hardlinked)
 run_in_bosh_chroot $chroot "
