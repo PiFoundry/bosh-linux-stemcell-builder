@@ -24,7 +24,7 @@ if [[ "${DISTRIB_CODENAME}" == 'xenial' ]]; then
   debs="$debs chrony module-init-tools"
 fi
 
-if is_ppc64le; then
+if is_ppc64le || is_armhf; then
   debs="$debs \
 libreadline-dev libtool texinfo ppc64-diag libffi-dev \
 libruby bundler libgmp-dev libgmp3-dev libmpfr-dev libmpc-dev"
@@ -32,7 +32,7 @@ fi
 
 pkg_mgr install $debs
 
-if ! is_ppc64le; then
+if ! is_ppc64le && ! is_armhf; then
   run_in_chroot $chroot "
     cd /tmp
 
@@ -107,7 +107,7 @@ else
 
   run_in_chroot $chroot "
     cd /tmp
-    # on ppc64le compile from source as the .deb packages are not available
+    # on ppc64le or arm compile from source as the .deb packages are not available
     # from the repo above
     wget http://download.rsyslog.com/liblogging/liblogging-1.0.5.tar.gz
     wget http://www.rsyslog.com/download/files/download/rsyslog/rsyslog-8.15.0.tar.gz
