@@ -273,7 +273,7 @@ module Bosh::Stemcell
         :bosh_audit_ubuntu,
         :bosh_log_audit_start,
       ].flatten.reject{ |s| Bosh::Stemcell::Arch.ppc64le? and s ==  :system_ixgbevf }
-      .reject{ |s| Bosh::Stemcell::Arch.armhf? and s ==  :system_ixgbevf }
+      .reject{ |s| Bosh::Stemcell::Arch.armhf? and s ==  :system_ixgbevf || s == :system_grub }
     end
 
     def photonos_os_stages
