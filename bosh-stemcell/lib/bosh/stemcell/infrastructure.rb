@@ -18,6 +18,8 @@ module Bosh::Stemcell
           Azure.new
         when 'softlayer'
           Softlayer.new
+        when 'bakery'
+          Bakery.new
         when 'null'
           NullInfrastructure.new
         else
@@ -175,6 +177,22 @@ module Bosh::Stemcell
 
       def additional_cloud_properties
         {'root_device_name' => '/dev/sda1'}
+      end
+    end
+    
+     class Bakery < Base
+      def initialize
+        super(
+          name: 'bakery',
+          hypervisor: 'pi',
+          default_disk_size: 3072,
+          disk_formats: ['rawdisk'],
+          stemcell_formats: ['piimg']
+        )
+      end
+
+      def additional_cloud_properties
+        {'root_device_name' => ''}
       end
     end
   end
