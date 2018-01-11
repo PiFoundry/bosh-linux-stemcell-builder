@@ -26,13 +26,13 @@ fi
 
 if is_ppc64le || is_armhf; then
   debs="$debs \
-libreadline-dev libtool texinfo ibffi-dev \
+libreadline-dev libtool texinfo \
 libgmp-dev libgmp3-dev libmpfr-dev libmpc-dev"
 fi
 #not sure which of these we need on arm, but they aren't available from apt-get - to be continued...
 if is_ppc64le; then
   debs="$debs \
-  ppc64-diag libruby bundler"
+  ppc64-diag libruby bundler ibffi-dev"
 fi
 
 pkg_mgr install $debs
