@@ -20,14 +20,14 @@ RUN go get github.com/dpb587/metalink \
     && rm -rf /root/go
 
 # add bsdtar because of a bug with tar in docker + overlayfs: https://github.com/coreos/bugs/issues/1095#issuecomment-292664145
-RUN apt-get install -y m4 libtool autoconf \
+RUN apt-get install -y m4 libtool autoconf pkg-config \
     && wget https://www.libarchive.org/downloads/libarchive-3.3.1.tar.gz \
     && tar xzf libarchive-3.3.1.tar.gz \
     && cd libarchive-3.3.1 \
     && ./build/autogen.sh \
     && ./configure \
     && make \
-    && make install
+    && make install \
     && cp $(which tar) $(which tar)~ \
     && ln -sf $(which bsdtar) $(which tar)
 # this can be restored with: RUN mv $(which tar)~ $(which tar)
