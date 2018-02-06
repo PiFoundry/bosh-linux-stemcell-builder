@@ -27,9 +27,10 @@ RUN apt-get install -y m4 libtool autoconf pkg-config \
     && ./build/autogen.sh \
     && ./configure \
     && make \
-    && make install \
-    && cp $(which tar) $(which tar)~ \
-    && ln -sf $(which bsdtar) $(which tar)
+    && make install 
+# dont override tar executable, it will break dpkg -i in stemcell builder tasks, it seems we have no choice but to make bsdtar explicit in the stemcell parts\
+#    && cp $(which tar) $(which tar)~ \
+#    && ln -sf $(which bsdtar) $(which tar)
 # this can be restored with: RUN mv $(which tar)~ $(which tar)
 
 # this is unshare from raspbian stretch so we can use the newer -fp flags
