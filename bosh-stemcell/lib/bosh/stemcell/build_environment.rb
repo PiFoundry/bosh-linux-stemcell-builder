@@ -175,6 +175,8 @@ module Bosh::Stemcell
         ' --tag ~exclude_on_softlayer'
       when 'google'
         ' --tag ~exclude_on_google'
+      when 'bakery'
+        ' --tag ~exclude_on_bakery'
       else
         ''
       end,
@@ -186,7 +188,11 @@ module Bosh::Stemcell
       if Bosh::Stemcell::Arch.ppc64le?
         ' --tag ~exclude_on_ppc64le'
       else
-        ''
+        if Bosh::Stemcell::Arch.armhf?
+          ' --tag ~exclude_on_armhf'
+        else
+          ''
+        end
       end
     end
 
