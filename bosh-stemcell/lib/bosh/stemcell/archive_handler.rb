@@ -5,7 +5,7 @@ module Bosh::Stemcell
     end
 
     def compress(directory, archive_filename)
-      @shell.run("sudo tar -cz -f #{archive_filename} -C #{directory} .")
+      @shell.run("sudo bsdtar -cz -f #{archive_filename} -C #{directory} .")
     end
   end
 end

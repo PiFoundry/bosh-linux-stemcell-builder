@@ -12,7 +12,7 @@ module Bosh::Stemcell
     end
 
     def manifest
-      @manifest ||= Psych.load(`tar -Oxzf #{path} stemcell.MF`)
+      @manifest ||= Psych.load(`bsdtar -Oxzf #{path} stemcell.MF`)
     end
 
     def name
@@ -39,7 +39,7 @@ module Bosh::Stemcell
 
     def extract(tar_options = {}, &block)
       Dir.mktmpdir do |tmp_dir|
-        tar_cmd = "tar xzf #{path} --directory #{tmp_dir}"
+        tar_cmd = "bsdtar xzf #{path} --directory #{tmp_dir}"
         tar_cmd << " --exclude=#{tar_options[:exclude]}" if tar_options.has_key?(:exclude)
 
         Rake::FileUtilsExt.sh(tar_cmd)

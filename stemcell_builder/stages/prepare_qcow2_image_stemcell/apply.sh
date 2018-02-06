@@ -17,5 +17,5 @@ qemu-img convert -c -O qcow2 -o compat=$compat $work/${stemcell_image_name} $wor
 pushd $work
 rm -f root.img
 ln root.qcow2 root.img
-tar zcf stemcell/image root.img
+bsdtar zcf stemcell/image root.img
 popd

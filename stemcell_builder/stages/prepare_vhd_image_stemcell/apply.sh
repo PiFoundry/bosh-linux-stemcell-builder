@@ -13,5 +13,5 @@ rm -f $work/root.vhd
 qemu-img convert -O vpc -o subformat=fixed $work/${stemcell_image_name} $work/root.vhd
 
 pushd $work
-tar zcf stemcell/image root.vhd
+bsdtar zcf stemcell/image root.vhd
 popd

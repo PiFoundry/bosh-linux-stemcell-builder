@@ -13,7 +13,7 @@ module Bosh::Stemcell
 
     describe 'compress' do
       it 'compresses the given directory' do
-        expect(shell).to receive(:run).with('sudo tar -cz -f some.tar.gz -C some_dir .')
+        expect(shell).to receive(:run).with('sudo bsdtar -cz -f some.tar.gz -C some_dir .')
 
         archiver.compress('some_dir', 'some.tar.gz')
       end

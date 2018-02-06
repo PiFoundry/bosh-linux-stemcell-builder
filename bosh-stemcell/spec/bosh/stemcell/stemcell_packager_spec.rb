@@ -144,7 +144,7 @@ describe Bosh::Stemcell::StemcellPackager do
       stemcell_contents_path = File.join(tmp_dir, 'stemcell-contents')
       FileUtils.mkdir_p(stemcell_contents_path)
       Dir.chdir(stemcell_contents_path) do
-        system("tar xfz #{tarball_path}")
+        system("bsdtar xfz #{tarball_path}")
       end
 
       extracted_image_path = File.join(stemcell_contents_path, 'image')

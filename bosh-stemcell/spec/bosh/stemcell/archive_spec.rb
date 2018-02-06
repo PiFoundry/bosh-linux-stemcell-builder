@@ -90,13 +90,13 @@ module Bosh::Stemcell
 
     describe '#extract' do
       it 'extracts stemcell' do
-        expect(Rake::FileUtilsExt).to receive(:sh).with(/tar xzf .*#{stemcell_path} --directory/)
+        expect(Rake::FileUtilsExt).to receive(:sh).with(/bsdtar xzf .*#{stemcell_path} --directory/)
 
         subject.extract {}
       end
 
       it 'extracts stemcell and excludes files' do
-        expect(Rake::FileUtilsExt).to receive(:sh).with(/tar xzf .*#{stemcell_path} --directory .* --exclude=image/)
+        expect(Rake::FileUtilsExt).to receive(:sh).with(/bsdtar xzf .*#{stemcell_path} --directory .* --exclude=image/)
 
         subject.extract(exclude: 'image') {}
       end

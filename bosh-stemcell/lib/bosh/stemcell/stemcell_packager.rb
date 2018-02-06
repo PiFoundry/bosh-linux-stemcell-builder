@@ -73,7 +73,7 @@ module Bosh
         tarball_name = File.join(tarball_path, stemcell_name)
 
         Dir.chdir(stemcell_build_path) do
-          system("tar zcf #{tarball_name} *")
+          system("bsdtar zcf #{tarball_name} *")
         end
 
         tarball_name
