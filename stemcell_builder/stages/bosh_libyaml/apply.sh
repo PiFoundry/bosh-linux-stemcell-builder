@@ -16,7 +16,7 @@ cp -r $dir/assets/$libyaml_archive $chroot/$bosh_dir/src
 
 run_in_bosh_chroot $chroot "
 cd src
-bsdtar zxvf $libyaml_archive
+tar zxvf $libyaml_archive
 cd $libyaml_basename
 ./configure --prefix=/usr
 make -j4 && make install

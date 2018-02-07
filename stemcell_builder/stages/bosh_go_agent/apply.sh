@@ -28,6 +28,9 @@ cd $assets_dir
 if is_ppc64le; then
   curl -L -o bosh-agent "https://s3.amazonaws.com/bosh-agent-binaries/bosh-agent-2.54.0-linux-ppc64le?versionId=7lvm5BBTSuIIIcmFzdYXq3N55D_djXyC"
   echo "207bb8beb9d5355bfe9c8bbad0e3230ec2c4bb5e828d371860f8a60f4d84027b  bosh-agent" | shasum -a 256 -c -
+elif is_armhf; then
+  curl -L -o bosh-agent "https://s3.amazonaws.com/rootfs-armhf/bosh-agent-2.54-linux-armhf"
+  echo "207bb8beb9d5355bfe9c8bbad0e3230ec2c4bb5e828d371860f8a60f4d84027b  bosh-agent" | shasum -a 256 -c -
 else
   curl -L -o bosh-agent "https://s3.amazonaws.com/bosh-agent-binaries/bosh-agent-2.54.0-linux-amd64?versionId=QBQi46s6KnUC1p3heFytYv0wJQIxZ5B1"
   echo "036a4b61ca8595a1dcb72b999176901f3b697911891ec8f2f6ff97635dc5425b  bosh-agent" | shasum -a 256 -c -
@@ -42,8 +45,13 @@ cd $assets_dir
 rm -rf davcli
 mkdir davcli
 current_version=0.0.26
-curl -L -o davcli/davcli https://s3.amazonaws.com/davcli/davcli-${current_version}-linux-amd64
-echo "cd75e886b4f5d27ce41841d5cc902fe64bab7b78 davcli/davcli" | sha1sum -c -
+if is_armhf; then
+  curl -L -o davcli/davcli https://s3.amazonaws.com/rootfs-armhf/davcli-${current_version}-linux-armhf
+  echo "bf073c8db305ac0c11a4e73cf6755709e1b1513a  davcli/davcli" | sha1sum -c -
+else
+  curl -L -o davcli/davcli https://s3.amazonaws.com/davcli/davcli-${current_version}-linux-amd64
+  echo "cd75e886b4f5d27ce41841d5cc902fe64bab7b78 davcli/davcli" | sha1sum -c -
+fi
 mv davcli/davcli $chroot/var/vcap/bosh/bin/bosh-blobstore-dav
 chmod +x $chroot/var/vcap/bosh/bin/bosh-blobstore-dav
 
