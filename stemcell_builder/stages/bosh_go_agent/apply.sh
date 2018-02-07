@@ -30,7 +30,7 @@ if is_ppc64le; then
   echo "207bb8beb9d5355bfe9c8bbad0e3230ec2c4bb5e828d371860f8a60f4d84027b  bosh-agent" | shasum -a 256 -c -
 elif is_armhf; then
   curl -L -o bosh-agent "https://s3.amazonaws.com/rootfs-armhf/bosh-agent-2.54-linux-armhf"
-  echo "207bb8beb9d5355bfe9c8bbad0e3230ec2c4bb5e828d371860f8a60f4d84027b  bosh-agent" | shasum -a 256 -c -
+  echo "e0a77929ed571881fb054ba677d1fd2a9664448b30fd4213198681b49cd823f9  bosh-agent" | shasum -a 256 -c -
 else
   curl -L -o bosh-agent "https://s3.amazonaws.com/bosh-agent-binaries/bosh-agent-2.54.0-linux-amd64?versionId=QBQi46s6KnUC1p3heFytYv0wJQIxZ5B1"
   echo "036a4b61ca8595a1dcb72b999176901f3b697911891ec8f2f6ff97635dc5425b  bosh-agent" | shasum -a 256 -c -
