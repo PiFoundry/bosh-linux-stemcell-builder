@@ -24,7 +24,7 @@ kpartx -dv ${disk_image}
 device=$(losetup --show --find ${disk_image})
 add_on_exit "losetup --verbose --detach ${device}"
 
-if ! is_ppc64le; then
+if [ ! is_ppc64le ] || [ ! is_armhf ]; then
 
   device_partition=$(kpartx -sav ${device} | grep "^add" | cut -d" " -f3)
   add_on_exit "kpartx -dv ${device}"
@@ -149,11 +149,15 @@ else
   mount -o bind /dev ${image_mount_point}/dev
   mount -o bind /proc ${image_mount_point}/proc
 
-
-  run_in_chroot ${image_mount_point} "
-  mount ${loopback_dev} /mnt/
-  grub-install -v ${loopback_boot_dev} --boot-directory=/mnt/boot
-  "
+  if is_ppc64le; then
+    run_in_chroot ${image_mount_point} "
+    mount ${loopback_dev} /mnt/
+    grub-install -v ${loopback_boot_dev} --boot-directory=/mnt/boot
+    "
+  else
+    mkfs.vfat ${loopback_boot_dev}
+    cp $assets_dir/boot $chroot/boot     
+  fi
 fi
 
 # Figure out uuid of partition

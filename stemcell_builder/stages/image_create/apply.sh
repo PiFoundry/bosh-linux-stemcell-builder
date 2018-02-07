@@ -14,6 +14,11 @@ if is_ppc64le; then
   # this and other code changes for ppc64le with input from Paulo Flabiano Smorigo @ IBM
   part_offset=2048s
   part_size=9MiB
+elif is_armhf; then
+  # Reserve space for the bootloader partition
+  part_offset=8192s
+#  part_size=86016s
+  part_size=44MiB
 else
   # Reserve the first 63 sectors for grub
   part_offset=63s
@@ -23,6 +28,10 @@ fi
 dd if=/dev/null of=${disk_image} bs=1M seek=${image_create_disk_size} 2> /dev/null
 parted --script ${disk_image} mklabel msdos
 if is_ppc64le; then
+  parted --script ${disk_image} mkpart primary fat32 $part_offset $part_size
+  parted --script ${disk_image} set 1 boot on
+  parted --script ${disk_image} mkpart primary ext4 $part_size 100%
+elif is_armhf; then
   parted --script ${disk_image} mkpart primary $part_offset $part_size
   parted --script ${disk_image} set 1 boot on
   parted --script ${disk_image} set 1 prep on
@@ -39,9 +48,8 @@ kpartx -dv ${disk_image}
 device=$(losetup --show --find ${disk_image})
 add_on_exit "losetup --verbose --detach ${device}"
 
-if is_ppc64le; then
-  device_partition=$(kpartx -sav ${device} | grep "^add" | grep "p2 " | grep -v "p1" | cut -d" "
-  -f3)
+if [ is_ppc64le ] || [ is_armhf ]; then
+  device_partition=$(kpartx -sav ${device} | grep "^add" | grep "p2 " | grep -v "p1" | cut -d" " -f3)
 else
   device_partition=$(kpartx -sav ${device} | grep "^add" | cut -d" " -f3)
 fi
