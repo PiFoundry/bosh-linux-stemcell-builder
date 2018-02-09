@@ -155,15 +155,23 @@ else
     grub-install -v ${loopback_boot_dev} --boot-directory=/mnt/boot
     "
   else
+    # on Raspberry, the first partition is a FAT32 boot image repo, and should be mounted under /boot.
     mkfs.vfat ${loopback_boot_dev}
-    cp $assets_dir/boot $chroot/boot     
+    mount ${loopback_boot_dev} ${image_mount_point}/boot
+    add_on_exit "umount ${image_mount_point}/boot"
+    cp -r $assets_dir/boot/* ${image_mount_point}/boot/
   fi
 fi
 
 # Figure out uuid of partition
 uuid=$(blkid -c /dev/null -sUUID -ovalue ${loopback_dev})
+if is_armhf; then
+  bootuuid=$(blkid -c /dev/null -sUUID -ovalue ${loopback_boot_dev})
+fi
 
-if is_ppc64le; then
+if is_armhf; then
+  kernel_version="raspbian" # placeholder, won't be used
+elif is_ppc64le; then
   kernel_version=$(basename $(ls -rt ${image_mount_point}/boot/vmlinux-* |tail -1) |cut -f2-8 -d'-')
 else
   kernel_version=$(basename $(ls -rt ${image_mount_point}/boot/vmlinuz-* |tail -1) |cut -f2-8 -d'-')
@@ -178,6 +186,14 @@ then
     cat > ${image_mount_point}/etc/fstab <<FSTAB
 # /etc/fstab Created by BOSH Stemcell Builder
 UUID=${uuid} / ext4 defaults 1 1
+FSTAB
+  fi
+  if is_armhf; then
+    cat > ${image_mount_point}/etc/fstab <<FSTAB
+# /etc/fstab Created by BOSH Stemcell Builder
+proc /proc proc defaults 0 0
+PARTUUID=${bootuuid} /boot vfat defaults 0 2
+PARTUUID=${uuid} / ext4 defaults,noatime 0 1
 FSTAB
   fi
 elif [ -f ${image_mount_point}/etc/redhat-release ] # Centos or RHEL
@@ -211,14 +227,16 @@ fi
 
 if [ -f ${image_mount_point}/etc/debian_version ] # Ubuntu
 then
-  if is_ppc64le; then
+  if is_armhf; then
+    dummy="arm"
+  elif is_ppc64le; then
     run_in_chroot ${image_mount_point} "
     if [ -f /etc/default/grub ]; then
       sed -i -e 's/^GRUB_CMDLINE_LINUX=\\\"\\\"/GRUB_CMDLINE_LINUX=\\\"quiet splash selinux=0 cgroup_enable=memory swapaccount=1 ipv6.disable=1 audit=1 \\\"/' /etc/default/grub
     fi
     grub-mkconfig -o /boot/grub/grub.cfg
     "
-   else
+  else
 cat > ${image_mount_point}/boot/grub/grub.conf <<GRUB_CONF
 default=0
 timeout=1
@@ -227,7 +245,7 @@ title ${os_name} (${kernel_version})
   kernel /boot/vmlinuz-${kernel_version} ro root=UUID=${uuid} net.ifnames=0 biosdevname=0 selinux=0 cgroup_enable=memory swapaccount=1 console=ttyS0,115200n8 console=tty0 earlyprintk=ttyS0 rootdelay=300 ipv6.disable=1 audit=1
   initrd /boot/${initrd_file}
 GRUB_CONF
-fi
+  fi
 
 elif [ -f ${image_mount_point}/etc/redhat-release ] # Centos or RHEL
 then
@@ -267,7 +285,7 @@ else
   exit 2
 fi
 
-if is_ppc64le; then
+if [ is_ppc64le || is_armhf ]; then
   umount ${image_mount_point}/dev
   umount ${image_mount_point}/proc
 fi
@@ -289,6 +307,9 @@ run_in_chroot ${image_mount_point} "rm -f /boot/grub/menu.lst"
 
 if is_ppc64le; then
   run_in_chroot ${image_mount_point} "touch /boot/grub/menu.lst"
+elif is_armhf
+then
+  echo "Skip touching menu.lst on arm"
 else
   run_in_chroot ${image_mount_point} "ln -s ./grub.conf /boot/grub/menu.lst"
 fi

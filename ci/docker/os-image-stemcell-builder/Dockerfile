@@ -39,3 +39,5 @@ ADD scripts/unshare /usr/bin/unshare
 ADD scripts/ubuntu_bashrc /home/ubuntu/.bashrc
 
 RUN for GO_EXECUTABLE in $GOROOT/bin/*; do ln -s $GO_EXECUTABLE /usr/bin/; done
+
+RUN apt-get install -y dosfstools
