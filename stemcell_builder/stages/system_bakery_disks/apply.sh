@@ -6,7 +6,7 @@ base_dir=$(readlink -nf $(dirname $0)/../..)
 source $base_dir/lib/prelude_apply.bash
 
 echo "Installing open-iscsi NFS mount hack script"
-cp $assets_dir/open_iscsi $chroot/etc/init.d/open_iscsi
+cp $assets_dir/open-iscsi $chroot/etc/init.d/open-iscsi
 
 echo "Add open-iscsi to startup"
 run_in_chroot $chroot "chkconfig --level 345 open-iscsi"
