@@ -192,8 +192,8 @@ FSTAB
     cat > ${image_mount_point}/etc/fstab <<FSTAB
 # /etc/fstab Created by BOSH Stemcell Builder
 proc /proc proc defaults 0 0
-PARTUUID=${bootuuid} /boot vfat defaults 0 2
-PARTUUID=${uuid} / ext4 defaults,noatime 0 1
+# PARTUUID=${bootuuid} /boot vfat defaults 0 2
+# PARTUUID=${uuid} / ext4 defaults,noatime 0 1
 FSTAB
   fi
 elif [ -f ${image_mount_point}/etc/redhat-release ] # Centos or RHEL

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+bundle install --local
+
+echo "===================  Creating base OS image ==================="
+mkdir -p $PWD/tmp
+bundle exec rake stemcell:build_os_image[ubuntu,trusty,$PWD/tmp/ubuntu_base_image.tgz]
+
+echo "===================  Creating stemcell image ==================="
+CANDIDATE_BUILD_NUMBER=0000.dev1 bundle exec rake stemcell:build_with_local_os_image[bakery,pi,ubuntu,trusty,$PWD/tmp/ubuntu_base_image.tgz]

@@ -34,6 +34,10 @@ if is_ppc64le; then
   debs="$debs \
   ppc64-diag libruby bundler ibffi-dev"
 fi
+if is_armhf; then
+  debs="$debs \
+  kpartx jq"
+fi
 
 pkg_mgr install $debs
 
