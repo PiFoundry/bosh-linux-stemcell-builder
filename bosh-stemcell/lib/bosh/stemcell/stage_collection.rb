@@ -132,6 +132,7 @@ module Bosh::Stemcell
     def bakery_stages
       [
         :system_network,        
+	:system_bakery_disks,
         :system_parameters,
         :bosh_clean,
         :bosh_harden,
