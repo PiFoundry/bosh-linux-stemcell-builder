@@ -160,6 +160,7 @@ else
     mount ${loopback_boot_dev} ${image_mount_point}/boot
     add_on_exit "umount ${image_mount_point}/boot"
     cp -r $assets_dir/boot/* ${image_mount_point}/boot/
+    tar xzf $assets_dir/kernelmodules.tgz ${image_mount_point}
   fi
 fi
 
