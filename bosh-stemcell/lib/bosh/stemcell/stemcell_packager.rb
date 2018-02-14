@@ -53,6 +53,9 @@ module Bosh
         if Bosh::Stemcell::Arch.ppc64le?
           architecture = 'ppc64'
         end
+        if Bosh::Stemcell::Arch.armhf?
+          architecture = 'arm32v7'
+        end
 
         {
             'name' => stemcell_name,
