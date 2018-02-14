@@ -181,6 +181,7 @@ if [ -f ${image_mount_point}/etc/debian_version ] # Ubuntu
 then
   initrd_file="initrd.img-${kernel_version}"
   os_name=$(source ${image_mount_point}/etc/lsb-release ; echo -n ${DISTRIB_DESCRIPTION})
+  echo "Checking for xenial for FSTAB"
   if [ ${DISTRIB_CODENAME} == 'xenial' ]
   then
     cat > ${image_mount_point}/etc/fstab <<FSTAB
@@ -188,12 +189,12 @@ then
 UUID=${uuid} / ext4 defaults 1 1
 FSTAB
   fi
+  echo "Checking for arm for FSTAB"
   if is_armhf; then
+    echo "Inserting FSTAB in "${image_mount_point}/etc/fstab
     cat > ${image_mount_point}/etc/fstab <<FSTAB
 # /etc/fstab Created by BOSH Stemcell Builder
 proc /proc proc defaults 0 0
-# PARTUUID=${bootuuid} /boot vfat defaults 0 2
-# PARTUUID=${uuid} / ext4 defaults,noatime 0 1
 FSTAB
   fi
 elif [ -f ${image_mount_point}/etc/redhat-release ] # Centos or RHEL
@@ -285,7 +286,7 @@ else
   exit 2
 fi
 
-if [ is_ppc64le || is_armhf ]; then
+if [ is_ppc64le ] || [ is_armhf ]; then
   umount ${image_mount_point}/dev
   umount ${image_mount_point}/proc
 fi
